@@ -194,12 +194,12 @@ public class BTreeMap<K,V> extends AbstractMap<K,V>
 
         @Override
         public boolean equals(Object obj) {
-            throw new IllegalAccessError();
+            throw new RuntimeException(new IllegalAccessException());
         }
 
         @Override
         public int hashCode() {
-            throw new IllegalAccessError();
+            throw new RuntimeException(new IllegalAccessException());
         }
 
         @Override

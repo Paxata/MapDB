@@ -16,8 +16,6 @@
 
 package org.mapdb;
 
-
-import java.io.IOError;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -152,7 +150,7 @@ public class EngineWrapper implements Engine{
     }
 
     protected static <V> V checkClosed(V v){
-        if(v==null) throw new IllegalAccessError("DB has been closed");
+        if(v==null) throw new RuntimeException(new IllegalAccessException("DB has been closed"));
         return v;
     }
 
@@ -256,7 +254,7 @@ public class EngineWrapper implements Engine{
                     byte[] bb = out.copyBytes();
                     return Arrays.hashCode(bb);
                 }catch(IOException e){
-                    throw new IOError(e);
+                    throw new RuntimeException(new IOException(e));
                 }
             }
 
@@ -454,42 +452,42 @@ public class EngineWrapper implements Engine{
 
         @Override
         public long preallocate() {
-            throw new IllegalAccessError("already closed");
+            throw new RuntimeException(new IllegalAccessException("already closed"));
         }
 
         @Override
         public void preallocate(long[] recids) {
-            throw new IllegalAccessError("already closed");
+            throw new RuntimeException(new IllegalAccessException("already closed"));
         }
 
         @Override
         public <A> long put(A value, Serializer<A> serializer) {
-            throw new IllegalAccessError("already closed");
+            throw new RuntimeException(new IllegalAccessException("already closed"));
         }
 
         @Override
         public <A> A get(long recid, Serializer<A> serializer) {
-            throw new IllegalAccessError("already closed");
+            throw new RuntimeException(new IllegalAccessException("already closed"));
         }
 
         @Override
         public <A> void update(long recid, A value, Serializer<A> serializer) {
-            throw new IllegalAccessError("already closed");
+            throw new RuntimeException(new IllegalAccessException("already closed"));
         }
 
         @Override
         public <A> boolean compareAndSwap(long recid, A expectedOldValue, A newValue, Serializer<A> serializer) {
-            throw new IllegalAccessError("already closed");
+            throw new RuntimeException(new IllegalAccessException("already closed"));
         }
 
         @Override
         public <A> void delete(long recid, Serializer<A> serializer) {
-            throw new IllegalAccessError("already closed");
+            throw new RuntimeException(new IllegalAccessException("already closed"));
         }
 
         @Override
         public void close() {
-            throw new IllegalAccessError("already closed");
+            throw new RuntimeException(new IllegalAccessException("already closed"));
         }
 
         @Override
@@ -499,52 +497,52 @@ public class EngineWrapper implements Engine{
 
         @Override
         public void commit() {
-            throw new IllegalAccessError("already closed");
+            throw new RuntimeException(new IllegalAccessException("already closed"));
         }
 
         @Override
         public void rollback() throws UnsupportedOperationException {
-            throw new IllegalAccessError("already closed");
+            throw new RuntimeException(new IllegalAccessException("already closed"));
         }
 
         @Override
         public boolean isReadOnly() {
-            throw new IllegalAccessError("already closed");
+            throw new RuntimeException(new IllegalAccessException("already closed"));
         }
 
         @Override
         public boolean canRollback() {
-            throw new IllegalAccessError("already closed");
+            throw new RuntimeException(new IllegalAccessException("already closed"));
         }
 
         @Override
         public boolean canSnapshot() {
-            throw new IllegalAccessError("already closed");
+            throw new RuntimeException(new IllegalAccessException("already closed"));
         }
 
         @Override
         public Engine snapshot() throws UnsupportedOperationException {
-            throw new IllegalAccessError("already closed");
+            throw new RuntimeException(new IllegalAccessException("already closed"));
         }
 
         @Override
         public void clearCache() {
-            throw new IllegalAccessError("already closed");
+            throw new RuntimeException(new IllegalAccessException("already closed"));
         }
 
         @Override
         public void compact() {
-            throw new IllegalAccessError("already closed");
+            throw new RuntimeException(new IllegalAccessException("already closed"));
         }
 
         @Override
         public SerializerPojo getSerializerPojo() {
-            throw new IllegalAccessError("already closed");
+            throw new RuntimeException(new IllegalAccessException("already closed"));
         }
 
         @Override
         public void closeListenerRegister(Runnable closeListener) {
-            throw new IllegalAccessError("already closed");
+            throw new RuntimeException(new IllegalAccessException("already closed"));
         }
 
         @Override

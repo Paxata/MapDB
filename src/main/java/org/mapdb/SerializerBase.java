@@ -878,7 +878,7 @@ public class SerializerBase implements Serializer<Object>{
         /** first try to deserialize object without allocating object stack*/
         switch (head) {
             case Header.ZERO_FAIL:
-                throw new IOError(new IOException("Zero Header, data corrupted"));
+                throw new RuntimeException(new IOException("Zero Header, data corrupted"));
             case Header.NULL:
                 break;
             case Header.BOOLEAN_TRUE:
@@ -1530,7 +1530,7 @@ public class SerializerBase implements Serializer<Object>{
                 return this;
 
             default:
-                throw new IOError(new IOException("Unknown header byte, data corrupted"));
+                throw new RuntimeException(new IOException("Unknown header byte, data corrupted"));
         }
     }
 

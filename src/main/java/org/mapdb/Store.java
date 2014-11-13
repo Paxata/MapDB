@@ -16,7 +16,6 @@
 package org.mapdb;
 
 import java.io.DataInput;
-import java.io.IOError;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
@@ -225,7 +224,7 @@ public abstract class Store implements Engine{
             }
             return out;
         } catch (IOException e) {
-            throw new IOError(e);
+            throw new RuntimeException(e);
         }
 
     }

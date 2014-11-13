@@ -76,8 +76,8 @@ public class StoreWALTest extends StoreDirectTest<StoreWAL>{
         try{
             e = openEngine();
             fail();
-        }catch(IOError e){
-            Throwable e2 = e;
+        }catch(RuntimeException e){
+            Throwable e2 = e.getCause();
             while (e2 instanceof IOError){
                 e2 = e2.getCause();
             }
@@ -96,7 +96,7 @@ public class StoreWALTest extends StoreDirectTest<StoreWAL>{
                 if(replay.get())
                     super.replayLogFile();
                 else
-                    throw new IllegalAccessError();
+                    throw new RuntimeException(new IllegalAccessException());
             }
         };
 
@@ -119,7 +119,7 @@ public class StoreWALTest extends StoreDirectTest<StoreWAL>{
             }
             wal.commit();
             fail("Should throw an error");
-        }catch(IllegalAccessError e){
+        }catch(RuntimeException e){
         }
 
         wal.log.close();
@@ -150,7 +150,7 @@ public class StoreWALTest extends StoreDirectTest<StoreWAL>{
             protected void replayLogFile() {
                 if(replay.get())
                     super.replayLogFile();
-                else throw new IllegalAccessError();
+                else throw new RuntimeException(new IllegalAccessException());
             }
         };
 

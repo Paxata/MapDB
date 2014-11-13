@@ -17,7 +17,6 @@
 package org.mapdb;
 
 import java.io.File;
-import java.io.IOError;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Iterator;
@@ -165,7 +164,7 @@ class StoreAppend extends Store{
                         next.sync();
                         next.close();
                     }
-                    throw new IOError(new IOException("File corrupted: "+f));
+                    throw new RuntimeException(new IOException("File corrupted: "+f));
                 }
                 volumes.put(num, vol);
 
@@ -198,7 +197,7 @@ class StoreAppend extends Store{
                             next.sync();
                             next.close();
                         }
-                        throw new IOError(new IOException("File corrupted: "+f));
+                        throw new RuntimeException(new IOException("File corrupted: "+f));
                     }
 
                     index.ensureAvailable(recid*8+8);
@@ -223,7 +222,7 @@ class StoreAppend extends Store{
                 next.sync();
                 next.close();
             }
-            throw new IOError(new IOException("File not sealed, data possibly corrupted"));
+            throw new RuntimeException(new IOException("File not sealed, data possibly corrupted"));
         }
     }
 
@@ -364,7 +363,7 @@ class StoreAppend extends Store{
         try{
             return getNoLock(recid, serializer);
         }catch(IOException e){
-            throw new IOError(e);
+            throw new RuntimeException(e);
         }finally {
             lock.unlock();
         }
@@ -432,7 +431,7 @@ class StoreAppend extends Store{
     public <A> boolean compareAndSwap(long recid, A expectedOldValue, A newValue, Serializer<A> serializer) {
         assert(expectedOldValue!=null && newValue!=null);
         assert(recid>0);
-        DataOutput2 out = serialize(newValue,serializer);
+        DataOutput2 out = serialize(newValue, serializer);
         final Lock lock = locks[Store.lockPos(recid)].writeLock();
         lock.lock();
         boolean ret;
@@ -445,7 +444,7 @@ class StoreAppend extends Store{
                 ret = false;
             }
         }catch(IOException e){
-            throw new IOError(e);
+            throw new RuntimeException(e);
         }finally {
             lock.unlock();
         }
@@ -586,11 +585,11 @@ class StoreAppend extends Store{
 
     @Override
     public void compact() {
-        if(readOnly) throw new IllegalAccessError("readonly");
+        if(readOnly) throw new RuntimeException(new IllegalAccessException("readonly"));
         lockAllWrite();
         try{
 
-            if(!indexInTx.isEmpty()) throw new IllegalAccessError("uncommited changes");
+            if(!indexInTx.isEmpty()) throw new RuntimeException(new IllegalAccessException("uncommited changes"));
 
             LongHashMap<Boolean> ff = new LongHashMap<Boolean>();
             for(long recid=0;recid<=maxRecid;recid++){

@@ -319,7 +319,7 @@ public class StoreWAL extends StoreDirect {
         try{
             return get2(ioRecid, serializer);
         }catch(IOException e){
-            throw new IOError(e);
+            throw new RuntimeException(e);
         }finally{
             lock.unlock();
         }
@@ -477,7 +477,7 @@ public class StoreWAL extends StoreDirect {
             modified.put(ioRecid,logPos);
 
         }catch(IOException e){
-            throw new IOError(e);
+            throw new RuntimeException(e);
         }finally{
             lock.unlock();
         }
@@ -664,7 +664,7 @@ public class StoreWAL extends StoreDirect {
         }
 
         if (log.getUnsignedShort(4) > STORE_VERSION) {
-            throw new IOError(new IOException("New store format version, please use newer MapDB version"));
+            throw new RuntimeException(new IOException("New store format version, please use newer MapDB version"));
         }
 
         if (log.getUnsignedShort(6) != expectedMasks())
@@ -1049,7 +1049,7 @@ public class StoreWAL extends StoreDirect {
             try {
                 phys.getDataInput(offset,size).readFully(ret);
             } catch (IOException e) {
-                throw new IOError(e);
+                throw new RuntimeException(e);
             }
 
             //and load page
@@ -1097,7 +1097,7 @@ public class StoreWAL extends StoreDirect {
     @Override protected void compactPreUnderLock() {
         assert(structuralLock.isLocked());
         if(logDirty())
-            throw new IllegalAccessError("WAL not empty; commit first, than compact");
+            throw new RuntimeException(new IllegalAccessException("WAL not empty; commit first, than compact"));
     }
 
     @Override protected void compactPostUnderLock() {

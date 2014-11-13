@@ -3,7 +3,10 @@ package org.mapdb;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.*;
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.File;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Random;
 
@@ -75,7 +78,7 @@ public class UtilsTest {
 
             return serializer.deserialize(in,out.pos);
         }catch(IOException ee){
-            throw new IOError(ee);
+            throw new RuntimeException(ee);
         }
     }
 
@@ -116,7 +119,7 @@ public class UtilsTest {
 
             return index;
         }catch(IOException e){
-            throw new IOError(e);
+            throw new RuntimeException(e);
         }
     }
 

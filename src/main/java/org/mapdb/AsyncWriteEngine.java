@@ -258,7 +258,7 @@ public class AsyncWriteEngine extends EngineWrapper implements Engine {
 
     /** checks that background threads are ready and throws exception if not */
     protected void checkState() {
-        if(closeInProgress) throw new IllegalAccessError("db has been closed");
+        if(closeInProgress) throw new RuntimeException(new IllegalAccessException("db has been closed"));
         if(threadFailedException !=null) throw new RuntimeException("Writer thread failed", threadFailedException);
     }
 
