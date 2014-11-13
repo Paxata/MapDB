@@ -39,7 +39,7 @@ public class BrokenDBTest {
         try {
             DBMaker.newFileDB(index).make();
             Assert.fail("Expected exception not thrown");
-        } catch (final IOError e) {
+        } catch (final RuntimeException e) {
             // will fail!
             Assert.assertTrue("Wrong message", e.getMessage().contains("storage has invalid header"));
         }

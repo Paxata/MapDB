@@ -1,7 +1,6 @@
 package org.mapdb;
 
 import java.io.File;
-import java.io.IOError;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Arrays;
@@ -103,7 +102,7 @@ public class DebugVolume extends Volume{
         try {
             ret.readFully(bb);
         } catch (IOException e) {
-            throw new IOError(e);
+            throw new RuntimeException(e);
         }
         ret.pos=0;
         out.println("   "+Arrays.toString(bb));

@@ -16,7 +16,6 @@
 package org.mapdb;
 
 import java.io.File;
-import java.io.IOError;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
@@ -240,10 +239,10 @@ public class StoreDirect extends Store{
 
     protected void checkHeaders() {
         if(index.getInt(0)!=HEADER||phys.getInt(0)!=HEADER)
-            throw new IOError(new IOException("storage has invalid header"));
+            throw new RuntimeException(new IOException("storage has invalid header"));
 
         if(index.getUnsignedShort(4)>StoreDirect.STORE_VERSION || phys.getUnsignedShort(4)>StoreDirect.STORE_VERSION )
-            throw new IOError(new IOException("New store format version, please use newer MapDB version"));
+            throw new RuntimeException(new IOException("New store format version, please use newer MapDB version"));
 
         final int masks = index.getUnsignedShort(6);
         if(masks!=phys.getUnsignedShort(6))
@@ -255,7 +254,7 @@ public class StoreDirect extends Store{
 
         long checksum = index.getLong(IO_INDEX_SUM);
         if(checksum!=indexHeaderChecksum())
-            throw new IOError(new IOException("Wrong index checksum, store was not closed properly and could be corrupted."));
+            throw new RuntimeException(new IOException("Wrong index checksum, store was not closed properly and could be corrupted."));
     }
 
     protected void createStructure() {
@@ -427,7 +426,7 @@ public class StoreDirect extends Store{
         try{
             return get2(ioRecid,serializer);
         }catch(IOException e){
-            throw new IOError(e);
+            throw new RuntimeException(e);
         }finally{
             lock.unlock();
         }
@@ -573,7 +572,7 @@ public class StoreDirect extends Store{
             update2(out, ioRecid);
 
         }catch(IOException e){
-            throw new IOError(e);
+            throw new RuntimeException(e);
         }finally{
             lock.unlock();
         }
@@ -781,7 +780,7 @@ public class StoreDirect extends Store{
     @Override
     public void compact() {
 
-        if(readOnly) throw new IllegalAccessError();
+        if(readOnly) throw new RuntimeException(new IllegalAccessException());
 
         final File indexFile = index.getFile();
         final File physFile = phys.getFile();
@@ -900,7 +899,7 @@ public class StoreDirect extends Store{
             compactPostUnderLock();
 
         }catch(IOException e){
-            throw new IOError(e);
+            throw new RuntimeException(e);
         }finally {
             unlockAllWrite();
         }

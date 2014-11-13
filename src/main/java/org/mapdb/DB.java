@@ -817,7 +817,7 @@ public class DB {
         checkNameNotExists(name);
         m.keySerializer = fillNulls(m.keySerializer);
         m.keySerializer = catPut(name+".keySerializer",m.keySerializer,new BTreeKeySerializer.BasicKeySerializer(getDefaultSerializer()));
-        m.valueSerializer = catPut(name+".valueSerializer",m.valueSerializer,getDefaultSerializer());
+        m.valueSerializer = catPut(name + ".valueSerializer", m.valueSerializer, getDefaultSerializer());
         if(m.comparator==null){
             m.comparator = m.keySerializer.getComparator();
             if(m.comparator==null){
@@ -1025,7 +1025,7 @@ public class DB {
         checkNameNotExists(m.name);
         m.serializer = fillNulls(m.serializer);
         m.serializer = catPut(m.name+".keySerializer",m.serializer,new BTreeKeySerializer.BasicKeySerializer(getDefaultSerializer()));
-        m.comparator = catPut(m.name+".comparator",m.comparator,BTreeMap.COMPARABLE_COMPARATOR);
+        m.comparator = catPut(m.name + ".comparator", m.comparator, BTreeMap.COMPARABLE_COMPARATOR);
 
         if(m.pumpPresortBatchSize!=-1){
             m.pumpSource = Pump.sort(m.pumpSource,m.pumpIgnoreDuplicates, m.pumpPresortBatchSize,Collections.reverseOrder(m.comparator),getDefaultSerializer());
@@ -1547,7 +1547,7 @@ public class DB {
 
     /**
      * Closes database.
-     * All other methods will throw 'IllegalAccessError' after this method was called.
+     * All other methods will throw 'IllegalAccessException' after this method was called.
      * <p/>
      * !! it is necessary to call this method before JVM exits!!
      */
@@ -1575,7 +1575,7 @@ public class DB {
 
 
     public void checkNotClosed() {
-        if(engine == null) throw new IllegalAccessError("DB was already closed");
+        if(engine == null) throw new RuntimeException(new IllegalAccessException("DB was already closed"));
     }
 
     /**

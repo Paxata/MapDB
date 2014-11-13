@@ -19,7 +19,6 @@ package org.mapdb;
 import org.mapdb.EngineWrapper.ReadOnlyEngine;
 
 import java.io.File;
-import java.io.IOError;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.*;
@@ -229,7 +228,7 @@ public class DBMaker<DBMakerT extends DBMaker<DBMakerT>> {
         try {
             return newFileDB(File.createTempFile("mapdb-temp","db"));
         } catch (IOException e) {
-            throw new IOError(e);
+            throw new RuntimeException(new IOException(e));
         }
     }
 
@@ -381,7 +380,7 @@ public class DBMaker<DBMakerT extends DBMaker<DBMakerT>> {
      */
     public DBMakerT mmapFileEnable() {
         assertNotInMemoryVolume();
-        props.setProperty(Keys.volume,Keys.volume_mmapf);
+        props.setProperty(Keys.volume, Keys.volume_mmapf);
         return getThis();
     }
 
@@ -917,8 +916,8 @@ public class DBMaker<DBMakerT extends DBMaker<DBMakerT>> {
         boolean compressionEnabled = Keys.compression_lzf.equals(props.getProperty(Keys.compression));
         return new StoreDirect(folFac,  propsGetBool(Keys.readOnly),
                 propsGetBool(Keys.deleteFilesAfterClose),
-                propsGetInt(Keys.freeSpaceReclaimQ,CC.DEFAULT_FREE_SPACE_RECLAIM_Q),
-                propsGetBool(Keys.commitFileSyncDisable),propsGetLong(Keys.sizeLimit,0),
+                propsGetInt(Keys.freeSpaceReclaimQ, CC.DEFAULT_FREE_SPACE_RECLAIM_Q),
+                propsGetBool(Keys.commitFileSyncDisable),propsGetLong(Keys.sizeLimit, 0),
                 propsGetBool(Keys.checksum),compressionEnabled,propsGetXteaEncKey(),
                 false,0);
     }
@@ -926,15 +925,15 @@ public class DBMaker<DBMakerT extends DBMaker<DBMakerT>> {
     protected Engine extendStoreWAL(Volume.Factory folFac) {
         boolean compressionEnabled = Keys.compression_lzf.equals(props.getProperty(Keys.compression));
         return new StoreWAL(folFac,  propsGetBool(Keys.readOnly),propsGetBool(Keys.deleteFilesAfterClose),
-                propsGetInt(Keys.freeSpaceReclaimQ,CC.DEFAULT_FREE_SPACE_RECLAIM_Q),
-                propsGetBool(Keys.commitFileSyncDisable),propsGetLong(Keys.sizeLimit,-1),
+                propsGetInt(Keys.freeSpaceReclaimQ, CC.DEFAULT_FREE_SPACE_RECLAIM_Q),
+                propsGetBool(Keys.commitFileSyncDisable),propsGetLong(Keys.sizeLimit, -1),
                 propsGetBool(Keys.checksum),compressionEnabled,propsGetXteaEncKey(),
                 false,0);
     }
 
 
     protected Volume.Factory extendStoreVolumeFactory() {
-        long sizeLimit = propsGetLong(Keys.sizeLimit,0);
+        long sizeLimit = propsGetLong(Keys.sizeLimit, 0);
         String volume = props.getProperty(Keys.volume);
         if(Keys.volume_byteBuffer.equals(volume))
             return Volume.memoryFactory(false,sizeLimit,CC.VOLUME_CHUNK_SHIFT);

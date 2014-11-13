@@ -4,7 +4,7 @@
 
     <groupId>org.mapdb</groupId>
     <artifactId>mapdb</artifactId>
-    <version>1.0.6</version>
+    <version>1.0.6px</version>
     <name>mapdb</name>
     <description>MapDB provides concurrent Maps, Sets and Queues backed by disk storage or off-heap memory. It is a fast, scalable and easy to use embedded Java database.</description>
     <url>http://www.mapdb.org</url>
@@ -24,12 +24,16 @@
             <name>Jan Kotek</name>
             <id>jan</id>
         </developer>
+        <developer>
+            <name>Victor Tso</name>
+            <id>roxchkplusony</id>
+        </developer>
     </developers>
 
     <scm>
-        <connection>scm:git:git@github.com:jankotek/MapDB.git</connection>
-        <developerConnection>scm:git:git@github.com:jankotek/MapDB.git</developerConnection>
-        <url>git@github.com:jankotek/MapDB.git</url>
+        <connection>scm:git:git@github.com:Paxata/MapDB.git</connection>
+        <developerConnection>scm:git:git@github.com:Paxata/MapDB.git</developerConnection>
+        <url>git@github.com:Paxata/MapDB.git</url>
     </scm>
 
     <properties>
@@ -193,9 +197,8 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.16</version>
                 <configuration>
-
                     <!-- do not run tests in parallel, it causes out of memory errors -->
-                    <forkCount>1</forkCount>
+                    <forkMode>never</forkMode>
 
                     <includes>
                         <include>**/*</include>
@@ -212,6 +215,13 @@
         </plugins>
     </build>
 
+  <distributionManagement>
+    <repository>
+      <id>thirdparty</id>
+      <name>3rd Party Repository</name>
+      <url>http://23.21.158.66:8081/nexus/content/repositories/thirdparty/</url>
+    </repository>
+  </distributionManagement>
 
     <profiles>
 

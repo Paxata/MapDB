@@ -346,7 +346,7 @@ public class DBMakerTest{
 
     File folderDoesNotExist = new File("folder-does-not-exit/db.aaa");
 
-    @Test(expected = IOError.class)
+    @Test(expected = RuntimeException.class)
     public void nonExistingFolder(){
         DBMaker.newFileDB(folderDoesNotExist).make();
     }
@@ -356,7 +356,7 @@ public class DBMakerTest{
     }
 
 
-    @Test(expected = IOError.class)
+    @Test(expected = RuntimeException.class)
     public void nonExistingFolder2(){
         DBMaker
                 .newFileDB(folderDoesNotExist)

@@ -61,7 +61,7 @@ public class DBTest {
         assertEquals(m1, new DB(engine).getTreeSet("test"));
     }
 
-    @Test(expected = IllegalAccessError.class)
+    @Test(expected = RuntimeException.class)
     public void testClose() throws Exception {
         db.close();
         db.getHashMap("test");

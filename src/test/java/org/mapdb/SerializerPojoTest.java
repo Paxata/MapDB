@@ -1,9 +1,7 @@
 package org.mapdb;
 
-
 import junit.framework.TestCase;
 
-import javax.security.sasl.RealmCallback;
 import javax.swing.*;
 import java.io.*;
 import java.net.InetAddress;
@@ -359,7 +357,7 @@ public class SerializerPojoTest extends TestCase {
             ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(out.toByteArray()));
             return (E) in.readObject();
         }catch(Exception ee){
-            throw new IOError(ee);
+            throw new RuntimeException(new IOException(ee));
         }
     }
 

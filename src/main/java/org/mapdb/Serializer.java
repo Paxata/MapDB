@@ -245,17 +245,17 @@ public interface Serializer<A> {
 
 
     /**
-     * Always throws {@link IllegalAccessError} when invoked. Useful for testing and assertions.
+     * Always throws {@link IllegalAccessException} when invoked. Useful for testing and assertions.
      */
     Serializer<Object> ILLEGAL_ACCESS = new Serializer<Object>() {
         @Override
         public void serialize(DataOutput out, Object value) throws IOException {
-            throw new IllegalAccessError();
+            throw new RuntimeException(new IllegalAccessException());
         }
 
         @Override
         public Object deserialize(DataInput in, int available) throws IOException {
-            throw new IllegalAccessError();
+            throw new RuntimeException(new IllegalAccessException());
         }
 
         @Override

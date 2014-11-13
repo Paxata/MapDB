@@ -67,7 +67,7 @@ public class TxEngine extends EngineWrapper {
         if(recid!=null) return recid;
 
         if(uncommitedData)
-            throw new IllegalAccessError("uncommited data");
+            throw new RuntimeException(new IllegalAccessException("uncommited data"));
 
         for(int i=0;i<PREALLOC_RECID_SIZE;i++){
             preallocRecids.add(super.preallocate());
@@ -99,7 +99,7 @@ public class TxEngine extends EngineWrapper {
         try {
             cleanTxQueue();
             if(uncommitedData && canRollback())
-                throw new IllegalAccessError("Can not create snapshot with uncommited data");
+                throw new RuntimeException(new IllegalAccessException("Can not create snapshot with uncommited data"));
             return new Tx();
         } finally {
             commitLock.writeLock().unlock();
@@ -395,7 +395,7 @@ public class TxEngine extends EngineWrapper {
     public <A> A get(long recid, Serializer<A> serializer) {
         commitLock.readLock().lock();
         try{
-            if(closed) throw new IllegalAccessError("closed");
+            if(closed) throw new RuntimeException(new IllegalAccessException("closed"));
             Lock lock = locks[Store.lockPos(recid)].readLock();
             lock.lock();
             try{
@@ -499,7 +499,7 @@ public class TxEngine extends EngineWrapper {
         try{
             if(closed) return;
             if(uncommitedData)
-                throw new IllegalAccessError("uncommitted data");
+                throw new RuntimeException(new IllegalAccessException("uncommitted data"));
             txs.remove(ref);
             cleanTxQueue();
 
@@ -572,7 +572,7 @@ public class TxEngine extends EngineWrapper {
         try{
             if(closed) return;
             if(uncommitedData)
-                throw new IllegalAccessError("uncommitted data");
+                throw new RuntimeException(new IllegalAccessException("uncommitted data"));
 
             txs.remove(ref);
             cleanTxQueue();

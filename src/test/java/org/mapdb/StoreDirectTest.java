@@ -435,8 +435,8 @@ public class StoreDirectTest <E extends StoreDirect> extends EngineTest<E>{
         try{
             e = openEngine();
             fail();
-        }catch(IOError e){
-            Throwable e2 = e;
+        }catch(RuntimeException e){
+            Throwable e2 = e.getCause();
             while (e2 instanceof IOError){
                 e2 = e2.getCause();
             }
@@ -462,8 +462,8 @@ public class StoreDirectTest <E extends StoreDirect> extends EngineTest<E>{
         try{
             e = openEngine();
             fail();
-        }catch(IOError e){
-            Throwable e2 = e;
+        }catch(RuntimeException e){
+            Throwable e2 = e.getCause();
             while (e2 instanceof IOError){
                 e2 = e2.getCause();
             }

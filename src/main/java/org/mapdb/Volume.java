@@ -42,12 +42,12 @@ public abstract class Volume {
      * Check space allocated by Volume is bigger or equal to given offset.
      * So it is safe to write into smaller offsets.
      *
-     * @throws IOError if Volume can not be expanded beyond given offset
+     * @throws RuntimeException if Volume can not be expanded beyond given offset
      * @param offset
      */
     public void ensureAvailable(final long offset){
         if(!tryAvailable(offset))
-            throw new IOError(new IOException("no free space to expand Volume"));
+            throw new RuntimeException(new IOException("no free space to expand Volume"));
     }
 
 
@@ -436,7 +436,7 @@ public abstract class Volume {
                     chunks = new ByteBuffer[0];
                 }
             } catch (IOException e) {
-                throw new IOError(e);
+                throw new RuntimeException(e);
             }
         }
 
@@ -460,7 +460,7 @@ public abstract class Volume {
                 chunks = null;
 
             } catch (IOException e) {
-                throw new IOError(e);
+                throw new RuntimeException(e);
             }finally{
                 growLock.unlock();
             }
@@ -496,7 +496,7 @@ public abstract class Volume {
                 }
                 return ret;
             } catch (IOException e) {
-                throw new IOError(e);
+                throw new RuntimeException(e);
             }
         }
 
@@ -544,7 +544,7 @@ public abstract class Volume {
                 try {
                     fileChannel.truncate(1L * chunkSize *maxSize);
                 } catch (IOException e) {
-                    throw new IOError(e);
+                    throw new RuntimeException(e);
                 }
 
                 if (ByteBufferVol.windowsWorkaround) {
@@ -669,7 +669,7 @@ public abstract class Volume {
                     size = channel.size();
                 }
             } catch (IOException e) {
-                throw new IOError(e);
+                throw new RuntimeException(e);
             }
         }
 
@@ -700,7 +700,7 @@ public abstract class Volume {
                     channel.truncate(offset);
                     size = offset;
                 } catch (IOException e) {
-                    throw new IOError(e);
+                    throw new RuntimeException(e);
                 }
             }
             return true;
@@ -713,7 +713,7 @@ public abstract class Volume {
                     this.size = size;
                     channel.truncate(size);
                 } catch (IOException e) {
-                    throw new IOError(e);
+                    throw new RuntimeException(e);
                 }
             }
 
@@ -744,7 +744,7 @@ public abstract class Volume {
 
                 writeFully(offset, buf);
             }catch(IOException e){
-                throw new IOError(e);
+                throw new RuntimeException(e);
             }
         }
 
@@ -755,7 +755,7 @@ public abstract class Volume {
                 buf.putLong(0, value);
                 writeFully(offset, buf);
             }catch(IOException e){
-                throw new IOError(e);
+                throw new RuntimeException(e);
             }
         }
 
@@ -766,7 +766,7 @@ public abstract class Volume {
                 buf.putInt(0, value);
                 writeFully(offset, buf);
             }catch(IOException e){
-                throw new IOError(e);
+                throw new RuntimeException(e);
             }
         }
 
@@ -777,7 +777,7 @@ public abstract class Volume {
                 buf.put(0, value);
                 writeFully(offset, buf);
             }catch(IOException e){
-                throw new IOError(e);
+                throw new RuntimeException(e);
             }
         }
 
@@ -787,7 +787,7 @@ public abstract class Volume {
                 ByteBuffer buf = ByteBuffer.wrap(src,srcPos, srcSize);
                 writeFully(offset, buf);
             }catch(IOException e){
-                throw new IOError(e);
+                throw new RuntimeException(e);
             }
         }
 
@@ -796,7 +796,7 @@ public abstract class Volume {
             try{
                 writeFully(offset,buf);
             }catch(IOException e){
-                throw new IOError(e);
+                throw new RuntimeException(e);
             }
         }
 
@@ -822,7 +822,7 @@ public abstract class Volume {
                         ((long) (buf.get(5) & 0xff) << 0);
 
             }catch(IOException e){
-                throw new IOError(e);
+                throw new RuntimeException(e);
             }
         }
 
@@ -834,7 +834,7 @@ public abstract class Volume {
                 readFully(offset,buf);
                 return buf.getLong(0);
             }catch(IOException e){
-                throw new IOError(e);
+                throw new RuntimeException(e);
             }
         }
 
@@ -845,7 +845,7 @@ public abstract class Volume {
                 readFully(offset,buf);
                 return buf.getInt(0);
             }catch(IOException e){
-                throw new IOError(e);
+                throw new RuntimeException(e);
             }
 
         }
@@ -857,7 +857,7 @@ public abstract class Volume {
                 readFully(offset,buf);
                 return buf.get(0);
             }catch(IOException e){
-                throw new IOError(e);
+                throw new RuntimeException(e);
             }
         }
 
@@ -868,7 +868,7 @@ public abstract class Volume {
                 readFully(offset,buf);
                 return new DataInput2(buf,0);
             }catch(IOException e){
-                throw new IOError(e);
+                throw new RuntimeException(e);
             }
         }
 
@@ -882,7 +882,7 @@ public abstract class Volume {
                     raf.close();
                 raf = null;
             }catch(IOException e){
-                throw new IOError(e);
+                throw new RuntimeException(e);
             }
         }
 
@@ -891,7 +891,7 @@ public abstract class Volume {
             try{
                 channel.force(true);
             }catch(IOException e){
-                throw new IOError(e);
+                throw new RuntimeException(e);
             }
         }
 
@@ -900,7 +900,7 @@ public abstract class Volume {
             try {
                 return channel==null || channel.size()==0;
             } catch (IOException e) {
-                throw new IOError(e);
+                throw new RuntimeException(e);
             }
         }
 

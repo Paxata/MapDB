@@ -128,7 +128,7 @@ public final class Pump {
                             }
                             return ret;
                         } catch (IOException e) {
-                            throw new IOError(e);
+                            throw new RuntimeException(new IOException(e));
                         }
                     }
 
@@ -147,7 +147,7 @@ public final class Pump {
             return sort(comparator, mergeDuplicates, iterators);
 
         }catch(IOException e){
-            throw new IOError(e);
+            throw new RuntimeException(new IOException(e));
         }finally{
             for(File f:presortFiles) f.delete();
         }

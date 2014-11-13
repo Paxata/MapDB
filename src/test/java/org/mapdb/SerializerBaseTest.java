@@ -489,7 +489,7 @@ public class SerializerBaseTest{
 
             return serializer.deserialize(in,out.pos);
         }catch(IOException ee){
-            throw new IOError(ee);
+            throw new RuntimeException(ee);
         }
     }
 
